@@ -76,8 +76,9 @@ button.danger {
   border-radius: 4px;
 }
 
+/* One empty line (1.5em = line-height) before the buttons. */
 .confirm p {
-  margin: 0;
+  margin: 0 0 1.5em;
 }
 
 #status.error {
