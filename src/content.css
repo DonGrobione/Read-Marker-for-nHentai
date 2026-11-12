@@ -1,0 +1,8 @@
+/* Green frame for thumbnails of galleries that were already opened.
+   A negative outline-offset draws the frame inside the thumbnail so the
+   site's grid layout is not shifted. */
+a.ngr-viewed {
+  outline: 4px solid #2ecc40 !important;
+  outline-offset: -4px;
+  border-radius: 0.3em;
+}
