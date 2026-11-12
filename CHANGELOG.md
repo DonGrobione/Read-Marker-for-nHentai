@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-12
+
 ### Added
 
 - New versions are submitted to addons.mozilla.org automatically, with the changelog as version notes.
+
+### Changed
+
+- New icon: a read thumbnail with a green frame and a check badge in front of an unread one.
 
 ## [0.1.1] - 2026-11-12
 

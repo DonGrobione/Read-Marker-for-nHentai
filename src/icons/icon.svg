@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-  <rect x="14" y="8" width="68" height="80" rx="6" fill="#1f1f1f" stroke="#2ecc40" stroke-width="8"/>
-  <path d="M32 50 l12 12 l22 -26" fill="none" stroke="#2ecc40" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Unread thumbnail (behind) -->
+  <g transform="rotate(-10 40 60)">
+    <rect x="12" y="16" width="58" height="82" rx="8" fill="#2a2a2a" stroke="#5a5a5a" stroke-width="4"/>
+    <path d="M22 84 l13-18 l8 10 l7-8 l12 16 z" fill="#454545"/>
+  </g>
+  <!-- Read thumbnail with green frame (front) -->
+  <rect x="40" y="18" width="70" height="94" rx="9" fill="#1f1f1f" stroke="#2ecc40" stroke-width="8"/>
+  <path d="M52 96 l17-24 l11 13 l9-10 l15 21 z" fill="#3c3c3c"/>
+  <circle cx="91" cy="42" r="7" fill="#3c3c3c"/>
+  <!-- Check badge -->
+  <circle cx="100" cy="100" r="23" fill="#2ecc40" stroke="#141414" stroke-width="4"/>
+  <path d="M89 100 l7 7 l14 -15" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
