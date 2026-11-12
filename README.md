@@ -2,9 +2,13 @@
 
 A Firefox extension that remembers which galleries you opened on [nhentai.net](https://nhentai.net) and puts a **green frame** around their thumbnails, so you can see what you have already viewed.
 
+> **Adult content:** nhentai.net hosts sexually explicit material and is intended for adults (18+) only.
+
 - Opening a gallery (e.g. `https://nhentai.net/g/696307/`) saves its ID (`696307`).
 - Thumbnails of saved galleries get a green frame on all list pages (home, search, tags, …).
 - The gallery you are currently viewing is never framed.
+
+![Thumbnails of already opened galleries with a green frame (site content blurred)](docs/example_web.png)
 
 ## Managing the list
 
@@ -13,6 +17,8 @@ Click the toolbar button (or *Add-ons → Read Marker for nHentai → Options*) 
 - **Edit:** one gallery ID per line. Add, remove or paste gallery URLs, then *Save list*.
 - **Export:** saves the list as a `.json` file.
 - **Import:** loads a `.json` export or a text file with one ID/URL per line. **Import replaces the current list** (you are asked to confirm).
+
+![The list page with saved gallery IDs, Save/Discard and Import/Export buttons](docs/example_options.png)
 
 ## Install (local testing)
 
@@ -36,7 +42,7 @@ Requires Firefox 140 or newer.
 
 ## Disclaimer
 
-This project is not affiliated with, endorsed by, or connected to nhentai.
+This project is not affiliated with, endorsed by, or connected to nhentai. nhentai.net is an adult website. Use this extension only where viewing such content is legal for you.
 
 This extension was created with the help of AI tools.
 
