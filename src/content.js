@@ -1,19 +1,18 @@
 "use strict";
 
 /*
- * nHentai Gallery Remember - content script
+ * Read Marker for nHentai - content script (uses ReadMarker from storage.js)
  *
- * 1. When a gallery page (/g/<id>/...) is shown, its ID is stored in
- *    browser.storage.local (one key per gallery: "g:<id>").
+ * 1. When a gallery page (/g/<id>/...) is shown, its ID is stored.
  * 2. Every thumbnail link to a stored gallery (/g/<id>/ containing an <img>)
- *    gets the CSS class "ngr-viewed", which draws a green frame.
+ *    gets the CSS class "read-marker-viewed", which draws a green frame. The gallery
+ *    that is currently open is never framed.
  *
  * nhentai.net is a single-page app: navigation does not reload the page, so a
  * MutationObserver re-checks the URL and the thumbnails after DOM updates.
  */
 (() => {
-  const KEY_PREFIX = "g:";
-  const VIEWED_CLASS = "ngr-viewed";
+  const VIEWED_CLASS = "read-marker-viewed";
   // Any page of a gallery (overview or reader) counts as "opened".
   const GALLERY_PAGE = /^\/g\/(\d+)(?:\/|$)/;
   // Thumbnails link to the gallery overview only; reader links (/g/<id>/<page>/)
@@ -21,34 +20,21 @@
   const THUMBNAIL_LINK = /^\/g\/(\d+)\/?$/;
   const UPDATE_DELAY_MS = 100;
 
-  const viewed = new Set();
+  let viewed = new Set();
   let lastUrl = null;
   let currentGalleryId = null;
   let updateTimer = null;
 
-  function galleryIdFromPath(pathname) {
-    const match = GALLERY_PAGE.exec(pathname);
-    return match ? match[1] : null;
-  }
-
-  async function loadViewed() {
-    const items = await browser.storage.local.get(null);
-    for (const key of Object.keys(items)) {
-      if (key.startsWith(KEY_PREFIX)) {
-        viewed.add(key.slice(KEY_PREFIX.length));
-      }
-    }
-  }
-
   function recordCurrentGallery() {
-    currentGalleryId = galleryIdFromPath(location.pathname);
+    const match = GALLERY_PAGE.exec(location.pathname);
+    currentGalleryId = match ? match[1] : null;
     if (!currentGalleryId || viewed.has(currentGalleryId)) {
       return;
     }
     viewed.add(currentGalleryId);
-    browser.storage.local
-      .set({ [KEY_PREFIX + currentGalleryId]: true })
-      .catch((error) => console.error("nHentai Gallery Remember: saving failed", error));
+    ReadMarker.addId(currentGalleryId).catch((error) =>
+      console.error("Read Marker for nHentai: saving failed", error)
+    );
   }
 
   function markThumbnails() {
@@ -82,16 +68,16 @@
     }
   }
 
-  // Keep this tab in sync when galleries are opened in other tabs.
+  // Keep this tab in sync with other tabs and with edits/imports on the options page.
   function onStorageChanged(changes, areaName) {
     if (areaName !== "local") {
       return;
     }
     for (const [key, change] of Object.entries(changes)) {
-      if (!key.startsWith(KEY_PREFIX)) {
+      const id = ReadMarker.idFromKey(key);
+      if (id === null) {
         continue;
       }
-      const id = key.slice(KEY_PREFIX.length);
       if ("newValue" in change) {
         viewed.add(id);
       } else {
@@ -103,9 +89,9 @@
 
   async function init() {
     try {
-      await loadViewed();
+      viewed = await ReadMarker.loadIds();
     } catch (error) {
-      console.error("nHentai Gallery Remember: loading failed", error);
+      console.error("Read Marker for nHentai: loading failed", error);
     }
     update();
     browser.storage.onChanged.addListener(onStorageChanged);

@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
-PACKAGE_NAME = "nhentai-gallery-remember"
+PACKAGE_NAME = "read-marker-for-nhentai"
 
 
 def main() -> int:

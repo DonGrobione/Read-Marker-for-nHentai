@@ -3,9 +3,6 @@ dist/
 *.xpi
 *.zip
 
-# Local copy of the website for reference only (third-party content, do not publish)
-Example/
-
 # Python
 __pycache__/
 
@@ -14,3 +11,7 @@ __pycache__/
 .idea/
 Thumbs.db
 .DS_Store
+
+# Node
+node_modules/
+web-ext-artifacts/

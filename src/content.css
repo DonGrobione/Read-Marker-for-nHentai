@@ -1,8 +1,19 @@
 /* Green frame for thumbnails of galleries that were already opened.
-   A negative outline-offset draws the frame inside the thumbnail so the
-   site's grid layout is not shifted. */
-a.ngr-viewed {
-  outline: 4px solid #2ecc40 !important;
-  outline-offset: -4px;
+   The site positions the cover <img> absolutely, which paints it over the
+   link's own outline or border. The frame is therefore drawn by a positioned
+   pseudo-element on top of the image. It sits inside the link box, so the
+   site's grid layout is not shifted, and it ignores the mouse, so clicks still
+   reach the link. */
+a.read-marker-viewed {
+  position: relative;
+}
+
+a.read-marker-viewed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 7px solid #2ecc40;
   border-radius: 0.3em;
+  pointer-events: none;
 }

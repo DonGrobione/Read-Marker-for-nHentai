@@ -1,0 +1,29 @@
+{
+  "name": "Read Marker for nHentai",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    // Lightweight desktop for running Firefox; view it at http://localhost:6080 (password: vscode)
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+  // Firefox needs more shared memory than Docker's 64 MB default
+  "runArgs": ["--shm-size=1g"],
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "Desktop (noVNC)",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "npm ci",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-python.python"
+      ]
+    }
+  },
+  "remoteUser": "node"
+}

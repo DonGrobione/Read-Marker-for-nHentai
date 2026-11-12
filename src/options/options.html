@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Read Marker for nHentai – Viewed galleries</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <h1>Viewed galleries</h1>
+    <p class="hint">One gallery ID per line. Gallery URLs (e.g. <code>https://nhentai.net/g/696307/</code>) are converted to IDs on save.</p>
+
+    <p><span id="count">0</span> galleries saved.</p>
+
+    <textarea id="list" spellcheck="false" autocomplete="off" aria-label="Gallery IDs, one per line"></textarea>
+
+    <div class="row">
+      <button id="save" type="button" class="primary">Save list</button>
+      <button id="revert" type="button">Discard changes</button>
+    </div>
+
+    <h2>Import / Export</h2>
+    <div class="row">
+      <button id="export" type="button">Export…</button>
+      <button id="import" type="button">Import…</button>
+      <input id="import-file" type="file" accept=".json,.txt,application/json,text/plain" hidden>
+    </div>
+
+    <div id="import-confirm" class="confirm" hidden>
+      <p id="import-summary"></p>
+      <div class="row">
+        <button id="import-apply" type="button" class="danger">Replace current list</button>
+        <button id="import-cancel" type="button">Cancel</button>
+      </div>
+    </div>
+
+    <p id="status" role="status" aria-live="polite"></p>
+  </main>
+  <script src="../storage.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

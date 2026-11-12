@@ -1,0 +1,85 @@
+:root {
+  color-scheme: light dark;
+  --accent: #2ecc40;
+  --danger: #d93025;
+  --border: #8888;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  font: 15px/1.5 system-ui, sans-serif;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 0 0 0.5em;
+}
+
+h2 {
+  font-size: 1.15em;
+  margin: 1.5em 0 0.5em;
+}
+
+.hint {
+  opacity: 0.8;
+}
+
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 50vh;
+  min-height: 200px;
+  padding: 8px;
+  font: 14px/1.4 ui-monospace, monospace;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button {
+  padding: 6px 14px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+}
+
+button.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+
+.confirm {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--danger);
+  border-radius: 4px;
+}
+
+.confirm p {
+  margin: 0;
+}
+
+#status.error {
+  color: var(--danger);
+}
