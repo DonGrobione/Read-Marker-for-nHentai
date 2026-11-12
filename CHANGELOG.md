@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New versions are submitted to addons.mozilla.org automatically, with the changelog as version notes.
+
 ## [0.1.1] - 2026-11-12
 
 ### Added

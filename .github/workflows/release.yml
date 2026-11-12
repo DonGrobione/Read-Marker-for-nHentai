@@ -1,5 +1,7 @@
-# Creates a GitHub release with the packaged .xpi whenever the version in
-# src/manifest.json changes on main (that is, when no tag v<version> exists yet).
+# Creates a release whenever the version in src/manifest.json changes on main
+# (that is, when no tag v<version> exists yet): submits the version to
+# addons.mozilla.org (listed, review queue) and creates a GitHub release with
+# the packaged .xpi. Release notes come from the CHANGELOG.md section.
 name: Release
 
 on:
@@ -68,30 +70,66 @@ jobs:
         if: steps.exists.outputs.exists == 'false'
         run: python3 build.py
 
-      - name: Create release
+      - name: Release notes
+        if: steps.exists.outputs.exists == 'false'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # The CHANGELOG.md section for this version, used on GitHub and AMO.
+          awk -v ver="$VERSION" '
+            index($0, "## [" ver "]") == 1 { found = 1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md > changes.md
+          if ! grep -q '[^[:space:]]' changes.md; then
+            echo "::error file=CHANGELOG.md::No changelog section for $VERSION"
+            exit 1
+          fi
+
+          cp changes.md notes.md
+          cat >> notes.md <<'EOF'
+
+          ---
+
+          The attached `.xpi` is not signed by Mozilla. Firefox loads it only as a temporary add-on (`about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…**), which is removed when Firefox restarts. For a permanent installation, use the version on addons.mozilla.org.
+          EOF
+
+          # AMO supports only limited Markdown (no headings), so "### Fixed"
+          # becomes "**Fixed**". web-ext passes this as the version's notes.
+          python3 - <<'EOF'
+          import json, re
+          text = open("changes.md", encoding="utf-8").read().strip()
+          text = re.sub(r"^#{1,6}\s+(.+)$", r"**\1**", text, flags=re.M)
+          with open("amo-metadata.json", "w", encoding="utf-8") as f:
+              json.dump({"version": {"release_notes": {"en-US": text}}}, f, ensure_ascii=False)
+          EOF
+
+      - name: Submit to addons.mozilla.org
+        if: steps.exists.outputs.exists == 'false'
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          if [ -z "$WEB_EXT_API_KEY" ] || [ -z "$WEB_EXT_API_SECRET" ]; then
+            echo "::error::Repository secrets AMO_JWT_ISSUER and AMO_JWT_SECRET are required"
+            exit 1
+          fi
+          # Submits the new version to the listed channel (review queue) and
+          # does not wait for the review.
+          npx web-ext sign \
+            --source-dir src \
+            --artifacts-dir "$RUNNER_TEMP/web-ext-artifacts" \
+            --channel listed \
+            --amo-metadata amo-metadata.json \
+            --approval-timeout 0
+
+      - name: Create GitHub release
         if: steps.exists.outputs.exists == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
           TAG: ${{ steps.version.outputs.tag }}
         run: |
-          # Release notes: the CHANGELOG.md section for this version.
-          awk -v ver="$VERSION" '
-            index($0, "## [" ver "]") == 1 { found = 1; next }
-            found && /^## \[/ { exit }
-            found { print }
-          ' CHANGELOG.md > notes.md
-          if ! grep -q '[^[:space:]]' notes.md; then
-            echo "::warning file=CHANGELOG.md::No changelog section for $VERSION"
-            echo "See [CHANGELOG.md](CHANGELOG.md)." > notes.md
-          fi
-          cat >> notes.md <<'EOF'
-
-          ---
-
-          The attached `.xpi` is not signed by Mozilla. Firefox loads it only as a temporary add-on (`about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…**), which is removed when Firefox restarts.
-          EOF
-
           gh release create "$TAG" "dist/read-marker-for-nhentai-$VERSION.xpi" \
             --target "$GITHUB_SHA" \
             --title "Read Marker for nHentai $VERSION" \
