@@ -14,10 +14,12 @@
 (() => {
   const VIEWED_CLASS = "read-marker-viewed";
   // Any page of a gallery (overview or reader) counts as "opened".
-  const GALLERY_PAGE = /^\/g\/(\d+)(?:\/|$)/;
+  // IDs use the same rule as the options page (no leading zero), so nothing is
+  // recorded that the list editor would reject.
+  const GALLERY_PAGE = new RegExp(`^/g/(${ReadMarker.ID_DIGITS})(?:/|$)`);
   // Thumbnails link to the gallery overview only; reader links (/g/<id>/<page>/)
   // are page thumbnails inside a gallery and must not be framed.
-  const THUMBNAIL_LINK = /^\/g\/(\d+)\/?$/;
+  const THUMBNAIL_LINK = new RegExp(`^/g/(${ReadMarker.ID_DIGITS})/?$`);
   const UPDATE_DELAY_MS = 100;
 
   let viewed = new Set();

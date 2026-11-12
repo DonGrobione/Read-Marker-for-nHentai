@@ -14,11 +14,11 @@ A Firefox extension that remembers which galleries you opened on [nhentai.net](h
 
 Click the toolbar button (or *Add-ons → Read Marker for nHentai → Options*) to open the list:
 
-- **Edit:** one gallery ID per line. Add, remove or paste gallery URLs, then *Save list*.
-- **Export:** saves the list as a `.json` file.
-- **Import:** loads a `.json` export or a text file with one ID/URL per line. **Import overwrites the current list** (you are asked to confirm).
+- **Edit:** one gallery ID per line (numbers without leading zeros). Add, remove or paste complete gallery URLs, then *Save changes*.
+- **Backup Export:** saves the list as a `.json` file.
+- **Backup Import:** loads a `.json` export or a text file with one ID/URL per line. **Import overwrites the current list** (you are asked to confirm).
 
-![The list page with saved gallery IDs, Save/Discard and Import/Export buttons](docs/example_options.png)
+![The list page with saved gallery IDs and the Save, Discard and Backup buttons](docs/example_options.png)
 
 ## Install (local testing)
 
@@ -39,7 +39,7 @@ This project is not affiliated with, endorsed by, or connected to nhentai. nhent
 ### Privacy
 
 - No usage data is tracked, except the IDs of galleries you viewed. They are saved locally in your Firefox profile (`browser.storage.local`).
-- Removing the extension will also delete the gallery list. Back it up (Export) if required.
+- Removing the extension will also delete the gallery list. Back it up (Backup Export) if required.
 - Only works with `https://nhentai.net`.
 
 ### AI tooling

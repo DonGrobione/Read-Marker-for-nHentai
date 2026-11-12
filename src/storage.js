@@ -7,9 +7,12 @@
 // eslint-disable-next-line no-unused-vars
 const ReadMarker = (() => {
   const KEY_PREFIX = "g:";
-  const ID_PATTERN = /^\d{1,10}$/;
-  // Accepts gallery URLs such as https://nhentai.net/g/696307/ in imports and edits.
-  const URL_ID = /\/g\/(\d{1,10})(?:\/|$)/;
+  // A gallery ID: 1 to 10 digits, no leading zero (so "0" and "0123" are invalid).
+  const ID_DIGITS = "[1-9]\\d{0,9}";
+  const ID_PATTERN = new RegExp(`^${ID_DIGITS}$`);
+  // Only complete gallery URLs, e.g. https://nhentai.net/g/696307/ or a reader
+  // page https://nhentai.net/g/696307/3/, optionally with a query or fragment.
+  const URL_ID = new RegExp(`^https?://(?:www\\.)?nhentai\\.net/g/(${ID_DIGITS})(?:[/?#].*)?$`);
 
   function keyFor(id) {
     return KEY_PREFIX + id;
@@ -22,10 +25,10 @@ const ReadMarker = (() => {
   function normalizeId(value) {
     const text = String(value).trim();
     if (ID_PATTERN.test(text)) {
-      return text.replace(/^0+(?=\d)/, "");
+      return text;
     }
     const match = URL_ID.exec(text);
-    return match ? match[1].replace(/^0+(?=\d)/, "") : null;
+    return match ? match[1] : null;
   }
 
   async function loadIds() {
@@ -105,5 +108,5 @@ const ReadMarker = (() => {
     return [...ids].sort((a, b) => Number(a) - Number(b));
   }
 
-  return { KEY_PREFIX, idFromKey, loadIds, addId, replaceIds, parseIdList, sortIds };
+  return { KEY_PREFIX, ID_DIGITS, idFromKey, loadIds, addId, replaceIds, parseIdList, sortIds };
 })();

@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-11-12
+
+### Added
+
+- List page: link to GitHub Issues for reporting problems and suggesting improvements.
+
+### Changed
+
+- List page: new heading "List of viewed gallery IDs"; the gallery count and the hint are now shown below the list.
+- List page: all buttons in one row, renamed to "Save changes", "Discard changes", "Backup Export" and "Backup Import".
+- Stricter list validation: gallery IDs with leading zeros (e.g. `0123`) and `0` are rejected, and only complete gallery URLs (`https://nhentai.net/g/<id>/…`) are accepted. Lines that merely contain `/g/<id>` are no longer accepted.
+
+### Fixed
+
+- Singular wording for one gallery: "1 gallery saved." instead of "1 galleries saved." (also in the save, import and export messages).
+
 ## [0.1.2] - 2026-11-12
 
 ### Added

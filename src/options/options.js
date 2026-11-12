@@ -28,7 +28,11 @@
     const ids = ReadMarker.sortIds(await ReadMarker.loadIds());
     savedText = ids.join("\n");
     listEl.value = savedText;
-    countEl.textContent = String(ids.length);
+    countEl.textContent = `${galleryCount(ids.length)} saved.`;
+  }
+
+  function galleryCount(count) {
+    return `${count} galler${count === 1 ? "y" : "ies"}`;
   }
 
   function describeInvalid(invalid) {
@@ -44,7 +48,7 @@
     }
     await ReadMarker.replaceIds(ids);
     await refresh();
-    setStatus(`Saved ${ids.length} galleries.`);
+    setStatus(`Saved ${galleryCount(ids.length)}.`);
   }
 
   function idCount(count) {
@@ -77,7 +81,7 @@
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-    setStatus(`Exported ${ids.length} galleries.`);
+    setStatus(`Exported ${galleryCount(ids.length)}.`);
   }
 
   async function readImportFile() {
@@ -114,7 +118,7 @@
     importConfirmEl.hidden = true;
     await ReadMarker.replaceIds(ids);
     await refresh();
-    setStatus(`Imported ${ids.length} galleries. The previous list was overwritten.`);
+    setStatus(`Imported ${galleryCount(ids.length)}. The previous list was overwritten.`);
   }
 
   function cancelImport() {
