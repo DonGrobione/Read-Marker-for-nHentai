@@ -2,7 +2,7 @@
 
 A Firefox extension that remembers which galleries you opened on [nhentai.net](https://nhentai.net) and puts a **green frame** around their thumbnails, so you can see what you have already viewed.
 
-> **Adult content:** nhentai.net hosts sexually explicit material and is intended for adults (18+) only.
+> **Adult content:** nhentai.net hosts sexually explicit material and is intended for adults (18+) only. Hence the blurring in the screenshots.
 
 - Opening a gallery (e.g. `https://nhentai.net/g/696307/`) saves its ID (`696307`).
 - Thumbnails of saved galleries get a green frame on all list pages (home, search, tags, …).
@@ -31,21 +31,20 @@ Requires Firefox 140 or newer.
 
 **Development:** open the folder in VS Code → *Reopen in Container*. Then `npm run lint`, `npm run build`, or `npm start` (Firefox with the extension, shown at http://localhost:6080, password `vscode`).
 
-## Data usage
-
-- **What is saved:** only the numeric IDs of galleries you opened. Nothing else (no titles, images, browsing history or personal data).
-- **Where:** locally in your Firefox profile (`browser.storage.local`).
-- **Shared with:** nobody. The extension makes no network requests and sends no data anywhere.
-- **Access:** the extension only runs on `https://nhentai.net`.
-- **Export files** are only created when you click *Export* and are saved where you choose.
-- **Deleting:** remove IDs on the list page, or remove the extension to delete all saved IDs.
-
 ## Disclaimer
 
+### General
 This project is not affiliated with, endorsed by, or connected to nhentai. nhentai.net is an adult website. Use this extension only where viewing such content is legal for you.
 
+### Privacy
+
+- No usage data is tracked, except the IDs of galleries you viewed. They are saved locally in your Firefox profile (`browser.storage.local`).
+- Removing the extension will also delete the gallery list. Back it up (Export) if required.
+- Only works with `https://nhentai.net`.
+
+### AI tooling
 This extension was created with the help of AI tools.
 
-## License
+### License
 
 Licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE).
