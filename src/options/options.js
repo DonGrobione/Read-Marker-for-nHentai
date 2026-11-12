@@ -47,19 +47,32 @@
     setStatus(`Saved ${ids.length} galleries.`);
   }
 
+  function idCount(count) {
+    return `${count} gallery ID${count === 1 ? "" : "s"}`;
+  }
+
+  // Local date and time, e.g. read-marker-for-nhentai_2026-11-12_19-18.json
+  function exportFileName(date) {
+    const pad = (value) => String(value).padStart(2, "0");
+    const day = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    const time = `${pad(date.getHours())}-${pad(date.getMinutes())}`;
+    return `read-marker-for-nhentai_${day}_${time}.json`;
+  }
+
   async function exportList() {
     const ids = ReadMarker.sortIds(await ReadMarker.loadIds());
+    const now = new Date();
     const data = {
       format: EXPORT_FORMAT,
       version: EXPORT_VERSION,
-      exported: new Date().toISOString(),
+      exported: now.toISOString(),
       galleries: ids,
     };
     const blob = new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `read-marker-for-nhentai-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = exportFileName(now);
     document.body.append(link);
     link.click();
     link.remove();
@@ -82,9 +95,11 @@
     }
     const currentCount = (await ReadMarker.loadIds()).size;
     pendingImport = ids;
-    importSummaryEl.textContent =
-      `"${file.name}" contains ${ids.length} galleries. Importing replaces the current list ` +
-      `of ${currentCount} galleries.`;
+    importSummaryEl.replaceChildren(
+      `${file.name} contains ${idCount(ids.length)}.`,
+      document.createElement("br"),
+      `Importing will replace your current list of ${currentCount} ID${currentCount === 1 ? "" : "s"}.`
+    );
     importConfirmEl.hidden = false;
     setStatus("");
   }

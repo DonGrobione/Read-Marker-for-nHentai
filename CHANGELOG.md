@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - New icon: a read thumbnail with a green frame and a check badge in front of an unread one.
+- Export file name now includes the local time: `read-marker-for-nhentai_<YYYY-MM-DD>_<hh-mm>.json`.
+- Clearer import confirmation: "<file> contains n gallery IDs. Importing will replace your current list of n IDs." (on two lines).
 
 ## [0.1.1] - 2026-11-12
 
