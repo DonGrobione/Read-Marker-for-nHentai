@@ -14,7 +14,8 @@ Firefox extension (Manifest V3, plain JavaScript, no build tooling or dependenci
   - `npm run lint` runs `web-ext lint` (addons-linter, the same checks AMO uses). Keep it at 0 errors and 0 warnings.
   - `npm run build` runs `build.py`.
   - `npm start` runs `web-ext run`, which starts Firefox on the noVNC desktop with the extension loaded and live reload.
-- Without VS Code: `docker build -t read-marker-dev .devcontainer`, then run commands with the repo mounted at `/work`.
+- Without VS Code: `docker build -t read-marker-dev .devcontainer`, then run commands with the repo mounted at `/work` and a named volume on `/work/node_modules` (e.g. `-v read-marker-node_modules:/work/node_modules`).
+- `node_modules` must stay out of the repo folder on the host: the repo is in a HiDrive-synced folder, and npm's `.bin` entries are Linux symlinks that the sync client cannot handle. The dev container therefore mounts it as the Docker volume `read-marker-node_modules`.
 
 ## Architecture
 

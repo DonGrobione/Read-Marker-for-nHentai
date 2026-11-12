@@ -16,7 +16,13 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": "npm ci",
+  // node_modules lives in a Docker volume, not in the bind-mounted (cloud-synced) repo folder:
+  // npm's .bin entries are Linux symlinks that Windows sync clients cannot handle.
+  "mounts": [
+    "source=read-marker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
+  // A new volume is owned by root, so hand it to the node user before installing.
+  "postCreateCommand": "sudo chown node:node node_modules && npm ci",
   "customizations": {
     "vscode": {
       "extensions": [
