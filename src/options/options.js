@@ -1,6 +1,6 @@
 "use strict";
 
-/* Options page: edit, import (replaces the list) and export viewed gallery IDs. */
+/* Options page: edit, import (overwrites the list) and export viewed gallery IDs. */
 (() => {
   const EXPORT_FORMAT = "read-marker-for-nhentai";
   const EXPORT_VERSION = 1;
@@ -98,7 +98,8 @@
     importSummaryEl.replaceChildren(
       `${file.name} contains ${idCount(ids.length)}.`,
       document.createElement("br"),
-      `Importing will replace your current list of ${currentCount} ID${currentCount === 1 ? "" : "s"}.`
+      document.createElement("br"),
+      `Importing will overwrite your current list of ${currentCount} ID${currentCount === 1 ? "" : "s"}.`
     );
     importConfirmEl.hidden = false;
     setStatus("");
@@ -113,7 +114,7 @@
     importConfirmEl.hidden = true;
     await ReadMarker.replaceIds(ids);
     await refresh();
-    setStatus(`Imported ${ids.length} galleries. The previous list was replaced.`);
+    setStatus(`Imported ${ids.length} galleries. The previous list was overwritten.`);
   }
 
   function cancelImport() {

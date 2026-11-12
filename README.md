@@ -16,7 +16,7 @@ Click the toolbar button (or *Add-ons → Read Marker for nHentai → Options*) 
 
 - **Edit:** one gallery ID per line. Add, remove or paste gallery URLs, then *Save list*.
 - **Export:** saves the list as a `.json` file.
-- **Import:** loads a `.json` export or a text file with one ID/URL per line. **Import replaces the current list** (you are asked to confirm).
+- **Import:** loads a `.json` export or a text file with one ID/URL per line. **Import overwrites the current list** (you are asked to confirm).
 
 ![The list page with saved gallery IDs, Save/Discard and Import/Export buttons](docs/example_options.png)
 
