@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1] - not yet released
+## [0.1.1] - 2026-11-12
+
+### Added
+
+- GitHub releases: when the version changes on `main`, a release with the `.xpi` is created automatically.
 
 ### Fixed
 
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Firefox for Android now requires version 142 or newer (desktop still 140), because Android supports the data collection declaration only from 142. Fixes the AMO validation warning.
 - Development: web-ext updated to 10.x, so `npm run lint` matches the checks on addons.mozilla.org.
 
-## [0.1.0] - not yet released
+## [0.1.0] - 2026-11-12
 
 Initial test version.
 
