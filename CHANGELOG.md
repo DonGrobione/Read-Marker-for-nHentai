@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Thicker frame (7px instead of 4px).
+- Firefox for Android now requires version 142 or newer (desktop still 140), because Android supports the data collection declaration only from 142. Fixes the AMO validation warning.
+- Development: web-ext updated to 10.x, so `npm run lint` matches the checks on addons.mozilla.org.
 
 ## [0.1.0] - not yet released
 

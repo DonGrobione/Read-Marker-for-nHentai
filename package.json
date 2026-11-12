@@ -10,6 +10,6 @@
     "start": "web-ext run --source-dir src --firefox /usr/bin/firefox --start-url https://nhentai.net/ --browser-console"
   },
   "devDependencies": {
-    "web-ext": "^8.10.0"
+    "web-ext": "^10.8.0"
   }
 }
