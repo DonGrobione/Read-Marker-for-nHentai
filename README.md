@@ -20,13 +20,14 @@ Click the toolbar button (or *Add-ons → Read Marker for nHentai → Options*) 
 
 ![The list page with saved gallery IDs and the Save, Discard and Backup buttons](docs/example_options.png)
 
+## Install
+Get it from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/read-marker-for-nhentai/). Requires Firefox 140 or newer.
+
 ## Install (local testing)
 1. Build the package: `python build.py` → creates `dist/read-marker-for-nhentai-<version>.xpi`
 2. In Firefox open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → select the `.xpi` (or `src/manifest.json`).
 
 Temporary add-ons are removed when Firefox restarts. Permanent installation requires a version signed by Mozilla.
-
-Requires Firefox 140 or newer.
 
 **Development:** open the folder in VS Code → *Reopen in Container*. Then `npm run lint`, `npm run build`, or `npm start` (Firefox with the extension, shown at http://localhost:6080, password `vscode`).
 
