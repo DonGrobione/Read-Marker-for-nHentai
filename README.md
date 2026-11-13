@@ -23,7 +23,7 @@ Click the toolbar button (or *Add-ons → Read Marker for nHentai → Options*) 
 ## Install
 Get it from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/read-marker-for-nhentai/). Requires Firefox 140 or newer.
 
-## Install (local testing)
+### Install (local testing)
 1. Build the package: `python build.py` → creates `dist/read-marker-for-nhentai-<version>.xpi`
 2. In Firefox open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → select the `.xpi` (or `src/manifest.json`).
 
