@@ -33,10 +33,22 @@
 
     <p id="status" role="status" aria-live="polite"></p>
 
+    <section id="sync">
+      <h2>Cloud sync (Dropbox)</h2>
+      <p class="hint">Keep the list in sync between your devices through your own Dropbox. The list of gallery IDs is stored as <code>galleries.json</code> in the folder <code>Apps/Read Marker for nHentai</code>. The extension cannot access any other files in your Dropbox. See the <a href="https://github.com/DonGrobione/Read-Marker-for-nHentai/blob/main/docs/privacy.md" target="_blank" rel="noopener noreferrer">privacy policy</a>.</p>
+      <p id="sync-state" role="status" aria-live="polite"></p>
+      <div class="row">
+        <button id="sync-connect" type="button" class="primary" hidden>Connect Dropbox</button>
+        <button id="sync-now" type="button" hidden>Sync now</button>
+        <button id="sync-disconnect" type="button" hidden>Disconnect</button>
+      </div>
+    </section>
+
     <br>
     <p class="feedback">Found a problem or have an idea for an improvement? Please report it on <a href="https://github.com/DonGrobione/Read-Marker-for-nHentai/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>.</p>
   </main>
   <script src="../storage.js"></script>
+  <script src="../dropbox.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

@@ -5,7 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-11-18
+
+### Added
+
+- Optional cloud sync through your own Dropbox: *Connect Dropbox* on the list page keeps the list in sync between devices. The list is stored as `galleries.json` in `Apps/Read Marker for nHentai`, and the extension cannot access any other Dropbox files. Removals are synced too. Not available in Firefox for Android.
+- Privacy policy (`docs/privacy.md`).
 
 ## [0.1.3] - 2026-11-12
 

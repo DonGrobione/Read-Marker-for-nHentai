@@ -94,6 +94,11 @@ button.danger {
   opacity: 0.8;
 }
 
-#status.error {
+#status.error,
+#sync-state.error {
   color: var(--danger);
+}
+
+button[hidden] {
+  display: none;
 }

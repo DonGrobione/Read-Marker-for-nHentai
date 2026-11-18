@@ -7,6 +7,8 @@
 // eslint-disable-next-line no-unused-vars
 const ReadMarker = (() => {
   const KEY_PREFIX = "g:";
+  const EXPORT_FORMAT = "read-marker-for-nhentai";
+  const EXPORT_VERSION = 1;
   // A gallery ID: 1 to 10 digits, no leading zero (so "0" and "0123" are invalid).
   const ID_DIGITS = "[1-9]\\d{0,9}";
   const ID_PATTERN = new RegExp(`^${ID_DIGITS}$`);
@@ -47,23 +49,29 @@ const ReadMarker = (() => {
     await browser.storage.local.set({ [keyFor(id)]: true });
   }
 
+  async function addIds(ids) {
+    const items = {};
+    for (const id of ids) {
+      items[keyFor(id)] = true;
+    }
+    if (Object.keys(items).length > 0) {
+      await browser.storage.local.set(items);
+    }
+  }
+
+  async function removeIds(ids) {
+    const keys = [...ids].map(keyFor);
+    if (keys.length > 0) {
+      await browser.storage.local.remove(keys);
+    }
+  }
+
   /** Replaces the stored list with exactly the given IDs. */
   async function replaceIds(newIds) {
     const target = new Set(newIds);
     const current = await loadIds();
-    const toRemove = [...current].filter((id) => !target.has(id)).map(keyFor);
-    const toAdd = {};
-    for (const id of target) {
-      if (!current.has(id)) {
-        toAdd[keyFor(id)] = true;
-      }
-    }
-    if (toRemove.length > 0) {
-      await browser.storage.local.remove(toRemove);
-    }
-    if (Object.keys(toAdd).length > 0) {
-      await browser.storage.local.set(toAdd);
-    }
+    await removeIds([...current].filter((id) => !target.has(id)));
+    await addIds([...target].filter((id) => !current.has(id)));
   }
 
   /**
@@ -108,5 +116,28 @@ const ReadMarker = (() => {
     return [...ids].sort((a, b) => Number(a) - Number(b));
   }
 
-  return { KEY_PREFIX, ID_DIGITS, idFromKey, loadIds, addId, replaceIds, parseIdList, sortIds };
+  /** The export file format {format, version, exported, galleries}, also used for the Dropbox file. */
+  function exportJson(ids, date = new Date()) {
+    const data = {
+      format: EXPORT_FORMAT,
+      version: EXPORT_VERSION,
+      exported: date.toISOString(),
+      galleries: sortIds(ids),
+    };
+    return JSON.stringify(data, null, 2) + "\n";
+  }
+
+  return {
+    KEY_PREFIX,
+    ID_DIGITS,
+    idFromKey,
+    loadIds,
+    addId,
+    addIds,
+    removeIds,
+    replaceIds,
+    parseIdList,
+    sortIds,
+    exportJson,
+  };
 })();

@@ -20,6 +20,15 @@ Click the toolbar button (or *Add-ons → Read Marker for nHentai → Options*) 
 
 ![The list page with saved gallery IDs and the Save, Discard and Backup buttons](docs/example_options.png)
 
+## Cloud sync (Dropbox)
+Keeps the list in sync between your Firefox installations through your own Dropbox. Click *Connect Dropbox* on the list page and sign in.
+
+- The list is stored as `galleries.json` in `Apps/Read Marker for nHentai`. The extension cannot access any other files in your Dropbox.
+- It syncs a few seconds after the list changes, every 10 minutes, when Firefox starts, and when you click *Sync now*.
+- Additions and removals from all devices are merged. On the first sync, the local list and the one in Dropbox are combined, so nothing is lost.
+- *Disconnect* revokes the access. The file in your Dropbox is kept. After reconnecting, the lists are combined again, so entries removed while disconnected can come back.
+- Not available in Firefox for Android.
+
 ## Install
 Get it from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/read-marker-for-nhentai/). Requires Firefox 140 or newer.
 
@@ -35,9 +44,9 @@ Temporary add-ons are removed when Firefox restarts. Permanent installation requ
 - No usage data is tracked, except the IDs of galleries you viewed. They are saved locally in your Firefox profile (`browser.storage.local`).
 - Removing the extension will also delete the gallery list. Back it up (Backup Export) if required.
 - Only works with `https://nhentai.net`.
-- Optional cloud sync via Dropbox is in development and not yet published.
+- Only with the optional cloud sync, the list is also stored in your own Dropbox. Nothing is sent anywhere else.
 
-Details: [Privacy Policy](docs/privacy.md) (prepared for the cloud sync release).
+Details: [Privacy Policy](docs/privacy.md).
 
 ## AI tooling
 This extension was created with the help of AI tools.

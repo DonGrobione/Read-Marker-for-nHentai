@@ -1,10 +1,7 @@
 "use strict";
 
-/* Options page: edit, import (overwrites the list) and export viewed gallery IDs. */
+/* Options page: edit, import (overwrites the list) and export viewed gallery IDs, Dropbox sync. */
 (() => {
-  const EXPORT_FORMAT = "read-marker-for-nhentai";
-  const EXPORT_VERSION = 1;
-
   const listEl = document.getElementById("list");
   const countEl = document.getElementById("count");
   const statusEl = document.getElementById("status");
@@ -64,15 +61,9 @@
   }
 
   async function exportList() {
-    const ids = ReadMarker.sortIds(await ReadMarker.loadIds());
+    const ids = await ReadMarker.loadIds();
     const now = new Date();
-    const data = {
-      format: EXPORT_FORMAT,
-      version: EXPORT_VERSION,
-      exported: now.toISOString(),
-      galleries: ids,
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json" });
+    const blob = new Blob([ReadMarker.exportJson(ids, now)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -81,7 +72,7 @@
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-    setStatus(`Exported ${galleryCount(ids.length)}.`);
+    setStatus(`Exported ${galleryCount(ids.size)}.`);
   }
 
   async function readImportFile() {
@@ -135,6 +126,80 @@
       });
   }
 
+  const syncStateEl = document.getElementById("sync-state");
+  const syncConnectEl = document.getElementById("sync-connect");
+  const syncNowEl = document.getElementById("sync-now");
+  const syncDisconnectEl = document.getElementById("sync-disconnect");
+
+  function setSyncState(message, isError = false) {
+    syncStateEl.textContent = message;
+    syncStateEl.classList.toggle("error", isError);
+  }
+
+  function describeSync(status) {
+    const last = status?.lastSync ? `Last synced: ${new Date(status.lastSync).toLocaleString()}.` : "Not synced yet.";
+    if (status?.state === "syncing") {
+      return "Syncing…";
+    }
+    if (status?.state === "error") {
+      return `Sync failed: ${status.message} ${last}`;
+    }
+    return `Connected. ${last}`;
+  }
+
+  async function renderSync() {
+    if (!ReadMarkerDropbox.isAvailable()) {
+      setSyncState("Cloud sync is not available in this browser (e.g. Firefox for Android).");
+      return;
+    }
+    const connected = await ReadMarkerDropbox.isConnected();
+    const status = await ReadMarkerDropbox.loadStatus();
+    syncConnectEl.hidden = connected;
+    syncNowEl.hidden = !connected;
+    syncDisconnectEl.hidden = !connected;
+    if (connected) {
+      setSyncState(describeSync(status), status?.state === "error");
+    } else {
+      setSyncState(status?.state === "error" ? status.message : "Not connected.", status?.state === "error");
+    }
+  }
+
+  function runSync() {
+    return browser.runtime.sendMessage({ type: "dropbox-sync" });
+  }
+
+  syncConnectEl.addEventListener("click", () => {
+    // The permission prompt needs the click, so it is requested before any await.
+    const permissionRequest = ReadMarkerDropbox.requestPermissions();
+    guard(async () => {
+      if (!(await permissionRequest)) {
+        setSyncState("Cloud sync needs permission to access Dropbox.", true);
+        return;
+      }
+      setSyncState("Waiting for the Dropbox sign-in…");
+      try {
+        await ReadMarkerDropbox.connect();
+      } catch (error) {
+        await ReadMarkerDropbox.removePermissions();
+        throw error;
+      }
+      await runSync();
+      await renderSync();
+    })();
+  });
+
+  syncNowEl.addEventListener("click", guard(async () => {
+    await runSync();
+    await renderSync();
+  }));
+
+  syncDisconnectEl.addEventListener("click", guard(async () => {
+    await ReadMarkerDropbox.disconnect();
+    await ReadMarkerDropbox.removePermissions();
+    await renderSync();
+    setStatus("Disconnected from Dropbox. The file in your Dropbox was kept. Delete the folder Apps/Read Marker for nHentai there to remove it.");
+  }));
+
   document.getElementById("save").addEventListener("click", guard(save));
   document.getElementById("revert").addEventListener("click", guard(async () => {
     await refresh();
@@ -148,7 +213,13 @@
 
   // Galleries opened in other tabs: update the list unless the user is editing it.
   browser.storage.onChanged.addListener((changes, areaName) => {
-    if (areaName !== "local" || !Object.keys(changes).some((key) => ReadMarker.idFromKey(key) !== null)) {
+    if (areaName !== "local") {
+      return;
+    }
+    if (ReadMarkerDropbox.AUTH_KEY in changes || ReadMarkerDropbox.STATUS_KEY in changes) {
+      guard(renderSync)();
+    }
+    if (!Object.keys(changes).some((key) => ReadMarker.idFromKey(key) !== null)) {
       return;
     }
     if (isDirty()) {
@@ -165,4 +236,5 @@
   });
 
   guard(refresh)();
+  guard(renderSync)();
 })();
