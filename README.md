@@ -35,6 +35,9 @@ Temporary add-ons are removed when Firefox restarts. Permanent installation requ
 - No usage data is tracked, except the IDs of galleries you viewed. They are saved locally in your Firefox profile (`browser.storage.local`).
 - Removing the extension will also delete the gallery list. Back it up (Backup Export) if required.
 - Only works with `https://nhentai.net`.
+- Optional cloud sync via Dropbox is in development and not yet published.
+
+Details: [Privacy Policy](docs/privacy.md) (prepared for the cloud sync release).
 
 ## AI tooling
 This extension was created with the help of AI tools.
